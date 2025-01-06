@@ -12,10 +12,23 @@
             background-color: #f4f4f9;
         }
         header {
-            background-color: #004085;
+            display: flex;
+            align-items: center;
+            background-color: #004085; /* School-like blue */
             color: white;
-            text-align: center;
-            padding: 1rem 0;
+            padding: 1rem 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        header img {
+            width: 60px; /* Adjusted size for the logo */
+            margin-right: 15px;
+        }
+        header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-align: left;
+            flex: 1;
+            margin: 0;
         }
         main {
             padding: 2rem;
@@ -66,10 +79,13 @@
 </head>
 <body>
     <header>
-        <h1>RESULT OF GBHSS MIRPUR SAKRO MIDTERM EXAMINATION 2024</h1>
+        <!-- Replace 'logo.png' with your actual image file path -->
+        <img src="https://raw.githubusercontent.com/username/repository/branch/assets/logo/IMG-20240506-WA0024(1).jpg" alt="School Logo">
+        <h1>RESULT OF GHSS MIRPUR SAKRO MIDTERM EXAMINATION 2024</h1>
     </header>
     <main>
         <div class="form-container">
+            
             <input type="text" id="rollNumber" placeholder="Enter Your Roll Number">
             <button onclick="showResult()">View Result</button>
         </div>
