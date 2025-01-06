@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GHSS Mirpur Sakro - Mid-Term Exam Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        header {
+            background-color: #004085;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+        }
+        main {
+            padding: 2rem;
+            text-align: center;
+        }
+        .form-container {
+            margin: 2rem auto;
+            max-width: 400px;
+            padding: 1.5rem;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .form-container input {
+            width: 100%;
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-container button {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: #004085;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .form-container button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 1.5rem;
+            text-align: left;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 1.5rem;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .pending {
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>RESULT OF GBHSS MIRPUR SAKRO MIDTERM EXAMINATION 2024</h1>
+    </header>
+    <main>
+        <div class="form-container">
+            <input type="text" id="rollNumber" placeholder="Enter Your Roll Number">
+            <button onclick="showResult()">View Result</button>
+        </div>
+        <div id="result" class="result" style="display:none;">
+            <h2>Student Result</h2>
+            <p><strong>Roll Number:</strong> <span id="resRoll"></span></p>
+            <p><strong>English:</strong> <span id="resEnglish"></span></p>
+            <p><strong>Physics:</strong> <span id="resPhysics"></span></p>
+            <p><strong>Math:</strong> <span class="pending">Pending</span></p>
+            <p><strong>Chemistry:</strong> <span id="resChemistry"></span></p>
+            <p><strong>Biology:</strong> <span id="resBiology"></span></p>
+            <p><strong>Pak Studies:</strong> <span id="resPakStudies"></span></p>
+            <p><strong>Obtained Marks:</strong> <span id="resObtained"></span> / 500</p>
+        </div>
+    </main>
+    <script>
+        const data = {
+    
+    "1001": { "English": 43, "Physics": 14, "Math": 0, "Chemistry": 4, "Biology": 3, "PakStudies": 67, "Obtained": 131 },
+    "1002": { "English": "A", "Physics": "A", "Math": 0, "Chemistry": "A", "Biology": "A", "PakStudies": 50, "Obtained": 50 },
+    "1003": { "English": 32, "Physics": 33, "Math": 0, "Chemistry": 54, "Biology": 40, "PakStudies": 89, "Obtained": 248 },
+    "1004": { "English": 51, "Physics": 73, "Math": 0, "Chemistry": 47, "Biology": 47, "PakStudies": 79, "Obtained": 297 },
+    "1005": { "English": 85, "Physics": 77, "Math": 0, "Chemistry": 29, "Biology": 32, "PakStudies": 85, "Obtained": 308 },
+    "1006": { "English": 34, "Physics": 15, "Math": 0, "Chemistry": 12, "Biology": 42, "PakStudies": 66, "Obtained": 169 },
+    "1007": { "English": 60, "Physics": 79, "Math": 0, "Chemistry": 42, "Biology": 55, "PakStudies": 75, "Obtained": 311 },
+    "1008": { "English": 89, "Physics": 94, "Math": 0, "Chemistry": 62, "Biology": 68, "PakStudies": 87, "Obtained": 400 },
+    "1009": { "English": 9, "Physics": 19, "Math": 0, "Chemistry": 5, "Biology": 4, "PakStudies": 45, "Obtained": 82 },
+    "1010": { "English": 5, "Physics": 12, "Math": 0, "Chemistry": 9, "Biology": "A", "PakStudies": "A", "Obtained": 26 },
+    "1011": { "English": 7, "Physics": 4, "Math": 0, "Chemistry": 8, "Biology": 7, "PakStudies": "A", "Obtained": 26 },
+    "1012": { "English": "A", "Physics": "A", "Math": 0, "Chemistry": "A", "Biology": "A", "PakStudies": "A", "Obtained": 0 },
+    "1013": { "English": 2, "Physics": 4, "Math": 0, "Chemistry": 7, "Biology": 4, "PakStudies": 31, "Obtained": 48 },
+    "1014": { "English": 26, "Physics": 95, "Math": 0, "Chemistry": 68, "Biology": 80, "PakStudies": 65, "Obtained": 334 },
+    "1015": { "English": 9, "Physics": 16, "Math": 0, "Chemistry": "CC", "Biology": 52, "PakStudies": 42, "Obtained": 119 },
+    "1016": { "English": 5, "Physics": 0, "Math": 0, "Chemistry": 5, "Biology": 1, "PakStudies": 14, "Obtained": 25 },
+    "1017": { "English": 13, "Physics": 37, "Math": 0, "Chemistry": 15, "Biology": 28, "PakStudies": 80, "Obtained": 173 },
+    "1018": { "English": 2, "Physics": 20, "Math": 0, "Chemistry": 4, "Biology": 4, "PakStudies": "A", "Obtained": 30 },
+    "1019": { "English": 1, "Physics": 2, "Math": 0, "Chemistry": 4, "Biology": 7, "PakStudies": 10, "Obtained": 24 },
+    "1020": { "English": 11, "Physics": 8, "Math": 0, "Chemistry": 6, "Biology": 4, "PakStudies": 49, "Obtained": 78 },
+    "1021": { "English": "A", "Physics": "A", "Math": 0, "Chemistry": 1, "Biology": "A", "PakStudies": "A", "Obtained": 1 },
+    "1022": { "English": 53, "Physics": 19, "Math": 0, "Chemistry": 17, "Biology": 33, "PakStudies": "A", "Obtained": 122 },
+    "1023": { "English": 1, "Physics": 4, "Math": 0, "Chemistry": 5, "Biology": 5, "PakStudies": 50, "Obtained": 65 },
+    "1024": { "English": 9, "Physics": 6, "Math": 0, "Chemistry": 4, "Biology": 3, "PakStudies": "A", "Obtained": 22 },
+    "1025": { "English": 42, "Physics": 73, "Math": 0, "Chemistry": 30, "Biology": 40, "PakStudies": 83, "Obtained": 268 },
+    "1026": { "English": "A", "Physics": "A", "Math": 0, "Chemistry": "A", "Biology": "A", "PakStudies": "A", "Obtained": 0 },
+    "1027": { "English": 5, "Physics": 12, "Math": 0, "Chemistry": "CC", "Biology": 12, "PakStudies": 0, "Obtained": 29 },
+    "1028": { "English": 31, "Physics": 30, "Math": 0, "Chemistry": 26, "Biology": 22, "PakStudies": 69, "Obtained": 178 },
+    "1029": { "English": 23, "Physics": 65, "Math": 0, "Chemistry": "CC", "Biology": "CC", "PakStudies": 74, "Obtained": 162 },
+    "1030": { "English": 5, "Physics": 45, "Math": 0, "Chemistry": 7, "Biology": 20, "PakStudies": 69, "Obtained": 146 },
+    "1031": { "English": 3, "Physics": 2, "Math": 0, "Chemistry": "A", "Biology": 12, "PakStudies": 5, "Obtained": 22 },
+    "1032": { "English": 13, "Physics": 4, "Math": 0, "Chemistry": "A", "Biology": 4, "PakStudies": "A", "Obtained": 21 },
+    "1033": { "English": 13, "Physics": 15, "Math": 0, "Chemistry": 26, "Biology": 8, "PakStudies": 66, "Obtained": 128 },
+    "1034": { "English": 5, "Physics": 8, "Math": 0, "Chemistry": 6, "Biology": 10, "PakStudies": 4, "Obtained": 33 },
+    "1035": { "English": 7, "Physics": 2, "Math": 0, "Chemistry": 5, "Biology": 8, "PakStudies": 11, "Obtained": 33 },
+    "1036": { "English": 15, "Physics": 6, "Math": 0, "Chemistry": 10, "Biology": 6, "PakStudies": 14, "Obtained": 51 },
+    "1037": { "English": 41, "Physics": 70, "Math": 0, "Chemistry": 5, "Biology": 45, "PakStudies": 14, "Obtained": 175 },
+    "1038": { "English": 3, "Physics": 0, "Math": 0, "Chemistry": 6, "Biology": 6, "PakStudies": 6, "Obtained": 21 },
+    "1039": { "English": 9, "Physics": 0, "Math": 0, "Chemistry": 6, "Biology": 7, "PakStudies": 8, "Obtained": 30 },
+    "1040": { "English": 3, "Physics": 4, "Math": 0, "Chemistry": 12, "Biology": 6, "PakStudies": 12, "Obtained": 37 },
+    "1041": { "English": 25, "Physics": 46, "Math": 0, "Chemistry": "CC", "Biology": 45, "PakStudies": 47, "Obtained": 163 },
+    "1042": { "English": 4, "Physics": 4, "Math": 0, "Chemistry": 5, "Biology": 6, "PakStudies": 9, "Obtained": 28 },
+    "1043": { "English": 10, "Physics": 4, "Math": 0, "Chemistry": "A", "Biology": 12, "PakStudies": "A", "Obtained": 26 },
+    "1044": { "English": 70, "Physics": 95, "Math": 0, "Chemistry": 50, "Biology": 76, "PakStudies": 67, "Obtained": 358 },
+    "1045": { "English": "A", "Physics": 46, "Math": 0, "Chemistry": 21, "Biology": 55, "PakStudies": 64, "Obtained": 186 },
+    "1046": { "English": 19, "Physics": 27, "Math": 0, "Chemistry": 10, "Biology": 7, "PakStudies": 76, "Obtained": 139 },
+    "1047": { "English": "A", "Physics": 23, "Math": 0, "Chemistry": 10, "Biology": 11, "PakStudies": 77, "Obtained": 121 },
+    "1048": { "English": "A", "Physics": 23, "Math": 0, "Chemistry": 4, "Biology": 7, "PakStudies": 65, "Obtained": 99 },
+    "1049": { "English": 46, "Physics": 57, "Math": 0, "Chemistry": 19, "Biology": "CC", "PakStudies": 73, "Obtained": 195 },
+    "1050": { "English": 6, "Physics": 6, "Math": 0, "Chemistry": 6, "Biology": 10, "PakStudies": 38, "Obtained": 66 },
+    "1051": { "English": "A", "Physics": "A", "Math": 0, "Chemistry": "A", "Biology": "A", "PakStudies": "A", "Obtained": 0 },
+    "1052": { "English": 57, "Physics": 96, "Math": 0, "Chemistry": 76, "Biology": 84, "PakStudies": 83, "Obtained": 396 },
+    "1053": { "English": 15, "Physics": 8, "Math": 0, "Chemistry": 8, "Biology": 13, "PakStudies": 68, "Obtained": 112 },
+    "1054": { "English": 18, "Physics": 75, "Math": 0, "Chemistry": 24, "Biology": 73, "PakStudies": 88, "Obtained": 278 },
+    "1055": { "English": 11, "Physics": 21, "Math": 0, "Chemistry": 32, "Biology": 51, "PakStudies": 80, "Obtained": 195 },
+    "1056": { "English": 6, "Physics": 16, "Math": 0, "Chemistry": 4, "Biology": 5, "PakStudies": 46, "Obtained": 77 },
+    "1057": { "English": 7, "Physics": 6, "Math": 0, "Chemistry": "A", "Biology": 7, "PakStudies": "A", "Obtained": 20 },
+    "1058": { "English": 66, "Physics": 66, "Math": 0, "Chemistry": 5, "Biology": 48, "PakStudies": 64, "Obtained": 249 },
+    "1059": { "English": 10, "Physics": 2, "Math": 0, "Chemistry": 2, "Biology": 5, "PakStudies": 58, "Obtained": 77 },
+    "1060": { "English": "A", "Physics": "A", "Math": 0, "Chemistry": "A", "Biology": "A", "PakStudies": "A", "Obtained": 0 },
+    "1061": { "English": 5, "Physics": 12, "Math": 0, "Chemistry": "A", "Biology": 6, "PakStudies": 62, "Obtained": 85 },
+    "1062": { "English": 4, "Physics": 6, "Math": 0, "Chemistry": "A", "Biology": 0, "PakStudies": 0, "Obtained": 10 },
+    "1063": { "English": 17, "Physics": 18, "Math": 0, "Chemistry": "A", "Biology": 3, "PakStudies": 30, "Obtained": 68 },
+    "1064": { "English": 40, "Physics": 79, "Math": 0, "Chemistry": "A", "Biology": 73, "PakStudies": 83, "Obtained": 275 },
+    "1065": { "English": 63, "Physics": "CC", "Math": 0, "Chemistry": "CC", "Biology": "CC", "PakStudies": 79, "Obtained": 142 },
+    "1066": { "English": 82, "Physics": "CC", "Math": 0, "Chemistry": "CC", "Biology": "CC", "PakStudies": 94, "Obtained": 176 },
+    "1067": { "English": "A", "Physics": "CC", "Math": 0, "Chemistry": "A", "Biology": "A", "PakStudies": "A", "Obtained": 0 },
+    "1068": { "English": 7, "Physics": "CC", "Math": 0, "Chemistry": "A", "Biology": "CC", "PakStudies": 86, "Obtained": 93 },
+    "1069": { "English": 9, "Physics": "A", "Math": 0, "Chemistry": "A", "Biology": 13, "PakStudies": "A", "Obtained": 22 },
+    "1070": { "English": 0, "Physics": 0, "Math": 0, "Chemistry": "CC", "Biology": 0, "PakStudies": 2, "Obtained": 2 },
+    "1071": { "English": 6, "Physics": "CC", "Math": 0, "Chemistry": 1, "Biology": 5, "PakStudies": 50, "Obtained": 62 },
+    "1072": { "English": 7, "Physics": "A", "Math": 0, "Chemistry": 4, "Biology": 8, "PakStudies": 60, "Obtained": 79 },
+    "1073": { "English": 4, "Physics": 6, "Math": 0, "Chemistry": 1, "Biology": 5, "PakStudies": 45, "Obtained": 61 },
+    "1074": { "English": 4, "Physics": 8, "Math": 0, "Chemistry": 12, "Biology": 6, "PakStudies": 19, "Obtained": 49 },
+    "1075": { "English": 13, "Physics": 10, "Math": 0, "Chemistry": 26, "Biology": 5, "PakStudies": 39, "Obtained": 93 },
+    "1076": { "English": 13, "Physics": 13, "Math": 0, "Chemistry": 29, "Biology": 42, "PakStudies": 66, "Obtained": 163 },
+    "1077": { "English": 21, "Physics": 43, "Math": 0, "Chemistry": 5, "Biology": 45, "PakStudies": 66, "Obtained": 180 },
+    "1078": { "English": 2, "Physics": 2, "Math": 0, "Chemistry": 3, "Biology": 4, "PakStudies": 58, "Obtained": 69 },
+    "1079": { "English": 40, "Physics": "A", "Math": 0, "Chemistry": "A", "Biology": "A", "PakStudies": "A", "Obtained": 40 },
+    "1080": { "English": 41, "Physics": 50, "Math": 0, "Chemistry": 21, "Biology": 60, "PakStudies": 58, "Obtained": 230 },
+    "1081": { "English": 4, "Physics": 29, "Math": 0, "Chemistry": 5, "Biology": 28, "PakStudies": 58, "Obtained": 124 },
+    "1082": { "English": 8, "Physics": "A", "Math": 0, "Chemistry": 5, "Biology": "A", "PakStudies": 59, "Obtained": 72 },
+    "1083": { "English": 6, "Physics": "A", "Math": 0, "Chemistry": 3, "Biology": "A", "PakStudies": 48, "Obtained": 57 },
+    "1084": { "English": 16, "Physics": "A", "Math": 0, "Chemistry": 17, "Biology": "A", "PakStudies": 66, "Obtained": 99 },
+    "1085": { "English": 3, "Physics": "CC", "Math": 0, "Chemistry": "CC", "Biology": "CC", "PakStudies": 76, "Obtained": 79 },
+    "1086": { "English": 0, "Physics": 20, "Math": 0, "Chemistry": 6, "Biology": 4, "PakStudies": "A", "Obtained": 30 },
+    "1087": { "English": 6, "Physics": 20, "Math": 0, "Chemistry": 2, "Biology": 1, "PakStudies": "A", "Obtained": 29 },
+    "1088": { "English": 7, "Physics": "CC", "Math": 0, "Chemistry": "CC", "Biology": "CC", "PakStudies": 66, "Obtained": 73 },
+    "1089": { "English": 0, "Physics": "CC", "Math": 0, "Chemistry": "CC", "Biology": "CC", "PakStudies": 67, "Obtained": 67 },
+    "1090": { "English": 0, "Physics": 0, "Math": 0, "Chemistry": "CC", "Biology": 0, "PakStudies": 67, "Obtained": 67 },
+    "1091": { "English": 0, "Physics": 0, "Math": 0, "Chemistry": 0, "Biology": 0, "PakStudies": 72, "Obtained": 72 },
+    "1092": { "English": 0, "Physics": 0, "Math": 0, "Chemistry": 0, "Biology": 0, "PakStudies": 0, "Obtained": 0 },
+    "1093": { "English": 0, "Physics": 0, "Math": 0, "Chemistry": 0, "Biology": 0, "PakStudies": 0, "Obtained": 0 }
+};
+
+
+       
+        function showResult() {
+            const rollNumber = document.getElementById('rollNumber').value;
+            const result = document.getElementById('result');
+            const student = data[rollNumber];
+
+            if (student) {
+                document.getElementById('resRoll').innerText = rollNumber;
+                document.getElementById('resEnglish').innerText = student.English;
+                document.getElementById('resPhysics').innerText = student.Physics;
+                document.getElementById('resChemistry').innerText = student.Chemistry;
+                document.getElementById('resBiology').innerText = student.Biology;
+                document.getElementById('resPakStudies').innerText = student.PakStudies;
+                document.getElementById('resObtained').innerText = student.Obtained;
+
+                result.style.display = 'block';
+            } else {
+                alert('Roll number not found.');
+            }
+        }
+    </script>
+
+    <footer>
+    <p>&copy; 2025 All Rights Reserved. Designed by Asif Lashari</p>
+</footer>
+
+</body>
+</html>
