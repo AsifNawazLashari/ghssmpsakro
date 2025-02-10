@@ -110,16 +110,35 @@
         const pdf = new jsPDF("p", "mm", "a4");
         const yOffset = 20;
 
+
+
+
+        pdf.setDrawColor(0, 0, 0); // Black color for the border
+        pdf.setLineWidth(0.5);
+        pdf.rect(5, 5, 200, 287); // Position and size of the border
+
         // Add the logo at the top-left corner
         pdf.addImage(logoURL, "JPEG", 10, yOffset + 5, 20, 20);
 
-        // Add header text
-        pdf.setFontSize(12);
-        pdf.setFont("helvetica", "bold");
-        pdf.text("GOVERNMENT HIGHER SECONDARY SCHOOL MIRPUR SAKRO", 105, yOffset + 12, { align: "center" });
-        pdf.text("MID-TERM EXAMINATION 2024-25", 105, yOffset + 18, { align: "center" });
-        pdf.text("ROLL NUMBER SLIP", 105, yOffset + 24, { align: "center" });
-        pdf.line(70, yOffset + 25, 140, yOffset + 25);
+        // Set font properties
+pdf.setFontSize(12);
+pdf.setFont("helvetica", "bold");
+
+// First line (Dark Brown)
+pdf.setTextColor(139, 69, 19); // Brown color
+pdf.text("GOVERNMENT HIGHER SECONDARY SCHOOL MIRPUR SAKRO", 105, yOffset + 12, { align: "center" });
+
+// Second line (Deep Gray - matching brown tone)
+pdf.setTextColor(90, 60, 40); // Dark grayish brown
+pdf.text("ANNUAL EXAMINATION 2024-25", 105, yOffset + 18, { align: "center" });
+
+// Third line (Black for balance)
+pdf.setTextColor(0, 0, 0); // Black
+pdf.text("ROLL NUMBER SLIP", 105, yOffset + 24, { align: "center" });
+
+// Draw line under heading
+pdf.setDrawColor(0, 0, 0);
+pdf.line(70, yOffset + 25, 140, yOffset + 25);;
 
         // Add student details
         let y = yOffset + 40;
@@ -131,7 +150,7 @@
         y += 6;
         pdf.text(`CLASS: VII`, 15, y);
         y += 6;
-        pdf.text(`Roll Number: ${rollNumber}`, 15, y);
+        pdf.text(`ROLL NUMBER: ${rollNumber}`, 15, y);
         y += 6;
         pdf.text(`INSTITUTE: GOVERNMENT SECONDARY SCHOOL MIRPUR SAKRO`, 15, y);
         y += 6;
