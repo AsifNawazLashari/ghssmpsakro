@@ -20,11 +20,11 @@ async function generatePDF() {
 
         const pdf = new jsPDF("p", "mm", "a4");
         
-        // Set the line width to 1px for a thinner border
-        pdf.setLineWidth(1);
+        // Set the line width to 0.5px for thinner borders
+        pdf.setLineWidth(0.5);
 
-        // Add blue border
-        pdf.setDrawColor(0, 0, 255); // Blue color
+        // Add black border
+        pdf.setDrawColor(0, 0, 0); // Black color for the border
         pdf.rect(5, 5, 200, 287); // Position and size of the border
 
         // Add logo and headings
@@ -34,8 +34,8 @@ async function generatePDF() {
         pdf.text("GOVERNMENT HIGHER SECONDARY SCHOOL MIRPUR SAKRO", 105, 15, { align: "center" });
         pdf.text("ANNUAL EXAMINATION 2024-2025", 105, 22, { align: "center" });
         
-        // Set the color for the line (blue)
-        pdf.setDrawColor(0, 0, 255);
+        // Set the color for the line (black)
+        pdf.setDrawColor(0, 0, 0);
 
         // Draw a bottom line for the header
         pdf.line(50, 38, 160, 38); // Line from x=50 to x=160 at y=38
@@ -86,12 +86,35 @@ async function generatePDF() {
         let instructionsY = pdf.autoTable.previous.finalY + 10;
         pdf.text("INSTRUCTIONS:", 15, instructionsY);
         instructionsY += 6;
-        pdf.text("i) Bring this slip in the exam hall.", 15, instructionsY);
-        instructionsY += 6;
-        pdf.text("ii) Do not bring unauthorized material.", 15, instructionsY);
-        instructionsY += 6;
-        pdf.text("iii) Bring all required writing materials.", 15, instructionsY);
 
+        // Updated instructions based on examination protocols for Pakistan (Grades 6 to 8)
+        pdf.text("1) The candidate must bring this roll number slip to the examination hall.", 15, instructionsY);
+        instructionsY += 6;
+        pdf.text("2) The candidate must carry a valid ID card along with the roll number slip.", 15, instructionsY);
+        instructionsY += 6;
+        pdf.text("3) Any form of cheating or malpractice will lead to disqualification from the exam.", 15, instructionsY);
+        instructionsY += 6;
+        pdf.text("4) The use of mobile phones, calculators, or any electronic devices is strictly prohibited.", 15, instructionsY);
+        instructionsY += 6;
+        pdf.text("5) The candidate must arrive 30 minutes before the scheduled time for the examination.", 15, instructionsY);
+        instructionsY += 6;
+        pdf.text("6) Candidates are not allowed to leave the examination hall until the specified time.", 15, instructionsY);
+        instructionsY += 6;
+        pdf.text("7) In case of any technical issue or emergency, the candidate must report to the supervisor immediately.", 15, instructionsY);
+        instructionsY += 6;
+        pdf.text("8) Any damage to the examination paper or materials will be penalized.", 15, instructionsY);
+        instructionsY += 6;
+        pdf.text("9) The examination center is not responsible for any loss of personal belongings.", 15, instructionsY);
+        instructionsY += 6;
+        pdf.text("10) The candidate must follow all the instructions provided by the examination supervisor.", 15, instructionsY);
+
+        // Add Signature options for Class Teacher and Center Incharge
+        instructionsY += 20;
+        pdf.text("Class Teacher's Signature: ____________________", 15, instructionsY);
+        instructionsY += 6;
+        pdf.text("Center Incharge's Signature: ____________________", 15, instructionsY);
+
+        // Save the PDF
         pdf.save(`${name}_RollNumberSlip.pdf`);
     };
 
