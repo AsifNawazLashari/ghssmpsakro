@@ -1,96 +1,78 @@
-async function generatePDF() {
+function generatePDF() {
   const { jsPDF } = window.jspdf;
-  const name = document.getElementById("name").value.toUpperCase();
-  const fatherName = document.getElementById("fatherName").value.toUpperCase();
+  const pdf = new jsPDF("p", "mm", "a4");
+
+  // Fetch form values
+  const name = document.getElementById("name").value;
+  const fatherName = document.getElementById("fatherName").value;
   const studentClass = document.getElementById("classSelect").value;
   const profilePicture = document.getElementById("profilePicture").files[0];
 
-  if (!name || !fatherName || !profilePicture) {
-    alert("Please fill out all fields and upload a profile picture.");
+  if (!name || !fatherName || !studentClass || !profilePicture) {
+    alert("Please fill all fields and upload a picture.");
     return;
   }
 
-  const profileReader = new FileReader();
-  profileReader.onload = function (profileEvent) {
-    const profilePicURL = profileEvent.target.result;
+  // Convert profile picture
+  const reader = new FileReader();
+  reader.onload = function (event) {
+    const profilePicURL = event.target.result;
 
-    const pdf = new jsPDF("p", "mm", "a4");
-
-    // Add blue page border with padding
-    pdf.setDrawColor(0, 0, 255);
-    pdf.setLineWidth(3);
-    pdf.rect(5, 5, 200, 287);
-
-    // Add institution name and title
-    pdf.setFontSize(16);
     pdf.setFont("helvetica", "bold");
+    pdf.setFontSize(12);
+
+    // Title & Institution Name
     pdf.text("GOVERNMENT HIGHER SECONDARY SCHOOL", 105, 20, { align: "center" });
-    pdf.text("ANNUAL EXAMINATION 2024-2025", 105, 28, { align: "center" });
-    pdf.text("ROLL NUMBER SLIP", 105, 36, { align: "center" });
+    pdf.text("ANNUAL EXAMINATION 2024-2025", 105, 30, { align: "center" });
+    pdf.text("ROLL NUMBER SLIP", 105, 40, { align: "center" });
+    pdf.line(70, 42, 140, 42);
 
-    let y = 50;
-
-    // Student Details Section
-    pdf.setFillColor(139, 69, 19); // Brown color for the header
-    pdf.rect(10, y, 190, 8, "F"); // Brown rectangle background
-    pdf.setTextColor(255, 255, 255);
-    pdf.setFontSize(14);
-    pdf.text("STUDENT DETAILS", 12, y + 6); // Title in white text
-    pdf.setTextColor(0, 0, 0); // Reset to black for body text
-
+    // Student Details (Bold)
+    let y = 60;
+    pdf.text(`NAME: ${name}`, 20, y);
+    pdf.addImage(profilePicURL, "JPEG", 150, y - 10, 30, 35);
+    y += 8;
+    pdf.text(`FATHER NAME: ${fatherName}`, 20, y);
+    y += 8;
+    pdf.text(`CLASS: ${studentClass}`, 20, y);
+    y += 8;
+    pdf.text(`INSTITUTE: GOVERNMENT HIGHER SECONDARY SCHOOL`, 20, y);
+    y += 8;
+    pdf.text(`EXAM CENTER: GOVERNMENT HIGHER SECONDARY SCHOOL`, 20, y);
     y += 12;
-    pdf.setFontSize(12);
-    pdf.setFont("helvetica", "normal");
-    pdf.text(`NAME: ${name}`, 15, y);
-    pdf.addImage(profilePicURL, "JPEG", 160, y - 10, 25, 30); // Profile picture
-    y += 6;
-    pdf.text(`FATHER'S NAME: ${fatherName}`, 15, y);
-    y += 6;
-    pdf.text(`CLASS: ${studentClass}`, 15, y);
-    y += 6;
-    pdf.text(`ROLL NUMBER: ${100 + parseInt(studentClass) * 100}`, 15, y);
 
-    // Time Table Header Section
-    y += 15;
-    pdf.setFillColor(135, 206, 250); // Sky blue for the table header
-    pdf.rect(10, y, 190, 8, "F");
-    pdf.setTextColor(0, 0, 0);
-    pdf.setFontSize(12);
-    pdf.text("DATE   DAY   SUBJECT   MORNING TIMING   AFTERNOON TIMING", 12, y + 6);
-
-    y += 10;
+    // Exam Schedule
     pdf.autoTable({
-      startY: y,
-      head: [["Date", "Day", "Subject", "Morning Timing", "Afternoon Timing"]],
+      head: [['Date', 'Day', 'Subject', 'Morning Timing', 'Afternoon Timing']],
       body: [
-        ["16-12-2024", "Monday", "English", "09:00 AM - 11:30 AM", ""],
-        ["17-12-2024", "Tuesday", "Science", "09:00 AM - 11:30 AM", "12:00 PM - 02:00 PM"],
-        ["18-12-2024", "Wednesday", "Sindhi", "09:00 AM - 11:30 AM", ""],
+        ['16-12-2024', 'Monday', 'English', '09:00 AM - 11:30 AM', ''],
+        ['17-12-2024', 'Tuesday', 'Science/Arabic', '09:00 AM - 11:30 AM', '12:00 PM - 02:00 PM'],
+        ['18-12-2024', 'Wednesday', 'Sindhi', '09:00 AM - 11:30 AM', ''],
+        ['19-12-2024', 'Thursday', 'SS/Drawing', '09:00 AM - 11:30 AM', '12:00 PM - 02:00 PM'],
+        ['20-12-2024', 'Friday', 'Islamiyat', '09:00 AM - 11:30 AM', ''],
+        ['21-12-2024', 'Saturday', 'Mathematics', '09:00 AM - 11:30 AM', '']
       ],
-      theme: "grid",
-      headStyles: { fillColor: [135, 206, 250], textColor: [0, 0, 0], fontSize: 12 },
-      bodyStyles: { fontSize: 12 },
-      columnStyles: {
-        0: { cellWidth: 40 },
-        1: { cellWidth: 30 },
-        2: { cellWidth: 50 },
-        3: { cellWidth: 40 },
-        4: { cellWidth: 50 }
-      },
+      startY: y,
+      theme: 'grid',
+      styles: { fontSize: 10, textColor: [0, 0, 0] },
+      headStyles: { fillColor: [150, 150, 150], fontStyle: 'bold' },
+      bodyStyles: { fontStyle: 'bold' },
     });
 
-    // Instructions Section
+    // Signature Section
     let ySignature = pdf.autoTable.previous.finalY + 20;
-    pdf.setFontSize(12);
-    pdf.text("INSTRUCTIONS:", 15, ySignature);
-    pdf.text("i) Bring this slip in the exam hall.", 15, ySignature + 6);
-    pdf.text("ii) No unauthorized material allowed.", 15, ySignature + 12);
-    pdf.text("iii) Kindly bring all writing materials (pen, pencil, eraser, etc.).", 15, ySignature + 18);
-    pdf.text("iv) Giving and taking of anything during the paper is strictly prohibited.", 15, ySignature + 24);
+    pdf.line(20, ySignature, 60, ySignature);
+    pdf.text("Candidate Signature:", 20, ySignature + 8);
+    
+    let centerText = "Center Incharge Signature:";
+    let textWidth = pdf.getTextWidth(centerText);
+    let endX = 190 - textWidth;
+    pdf.line(endX, ySignature, 190, ySignature);
+    pdf.text(centerText, endX, ySignature + 8);
 
-    // Save the PDF
+    // Save PDF
     pdf.save(`${name}_RollNumberSlip.pdf`);
   };
 
-  profileReader.readAsDataURL(profilePicture);
+  reader.readAsDataURL(profilePicture);
 }
