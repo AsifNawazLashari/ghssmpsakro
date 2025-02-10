@@ -140,23 +140,52 @@ pdf.text("ROLL NUMBER SLIP", 105, yOffset + 24, { align: "center" });
 pdf.setDrawColor(0, 0, 0);
 pdf.line(70, yOffset + 25, 140, yOffset + 25);;
 
-        // Add student details
-        let y = yOffset + 40;
-        pdf.setFontSize(10);
-        pdf.text(`NAME: ${name}`, 15, y);
-        pdf.addImage(profilePicURL, "JPEG", 170, y - 10, 25, 33);
-        y += 6;
-        pdf.text(`FATHER NAME: ${fatherName}`, 15, y);
-        y += 6;
-        pdf.text(`CLASS: VII`, 15, y);
-        y += 6;
-        pdf.text(`ROLL NUMBER: ${rollNumber}`, 15, y);
-        y += 6;
-        pdf.text(`INSTITUTE: GOVERNMENT SECONDARY SCHOOL MIRPUR SAKRO`, 15, y);
-        y += 6;
-        pdf.text(`CENTER: GOVERNMENT SECONDARY SCHOOL MIRPUR SAKRO`, 15, y);
-        y += 10;
+        // Add student details with color formatting
+let y = yOffset + 40;
+pdf.setFontSize(10);
 
+// NAME
+pdf.setTextColor(139, 69, 19); // Dark Brown
+pdf.text("NAME:", 15, y);
+pdf.setTextColor(0, 0, 0); // Black
+pdf.text(name, 45, y);
+pdf.addImage(profilePicURL, "JPEG", 170, y - 10, 25, 33);
+y += 6;
+
+// FATHER NAME
+pdf.setTextColor(139, 69, 19);
+pdf.text("FATHER NAME:", 15, y);
+pdf.setTextColor(0, 0, 0);
+pdf.text(fatherName, 55, y);
+y += 6;
+
+// CLASS
+pdf.setTextColor(139, 69, 19);
+pdf.text("CLASS:", 15, y);
+pdf.setTextColor(0, 0, 0);
+pdf.text("VII", 40, y);
+y += 6;
+
+// ROLL NUMBER
+pdf.setTextColor(139, 69, 19);
+pdf.text("ROLL NUMBER:", 15, y);
+pdf.setTextColor(0, 0, 0);
+pdf.text(rollNumber, 60, y);
+y += 6;
+
+// INSTITUTE
+pdf.setTextColor(139, 69, 19);
+pdf.text("INSTITUTE:", 15, y);
+pdf.setTextColor(0, 0, 0);
+pdf.text("GOVERNMENT SECONDARY SCHOOL MIRPUR SAKRO", 50, y);
+y += 6;
+
+// CENTER
+pdf.setTextColor(139, 69, 19);
+pdf.text("CENTER:", 15, y);
+pdf.setTextColor(0, 0, 0);
+pdf.text("GOVERNMENT SECONDARY SCHOOL MIRPUR SAKRO", 45, y);
+y += 10;
         // Add exam schedule table
         pdf.autoTable({
   head: [['Date', 'Day', 'Subject', 'Morning Timing', 'Afternoon Timing']],
