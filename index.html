@@ -1,118 +1,205 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roll Number Slip Generator</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-        }
-
-        h1 {
-            text-align: center;
-            font-size: 24px;
-        }
-
-        label {
-            font-weight: bold;
-            margin-top: 10px;
-            display: block;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 8px;
-            margin: 5px 0 15px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        .button-container {
-            text-align: center;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            border-radius: 4px;
-        }
-
-        .btn:hover {
-            background-color: #45a049;
-        }
-
-        .data-table {
-            margin-top: 30px;
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .data-table, .data-table th, .data-table td {
-            border: 1px solid #ddd;
-        }
-
-        .data-table th, .data-table td {
-            padding: 8px;
-            text-align: left;
-        }
-
-        .data-table th {
-            background-color: #f2f2f2;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roll Number Slip Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    .form-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    .form-container h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 8px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+    .form-actions {
+      text-align: center;
+    }
+    .form-actions button {
+      padding: 10px 20px;
+      font-size: 16px;
+      color: #fff;
+      background-color: #007bff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .form-actions button:hover {
+      background-color: #0056b3;
+    }
+  </style>
 </head>
 <body>
-
-    <h1>Generate Roll Number Slip</h1>
-
-    <form id="rollNumberSlipForm">
-        <label for="name">Student Name:</label>
-        <input type="text" id="name" required><br>
-
-        <label for="fatherName">Father's Name:</label>
-        <input type="text" id="fatherName" required><br>
-
+  <div class="form-container">
+    <img id="hiddenLogo" src="logo.jpg" style="display: none; width: 25mm; height: 25mm;" alt="Logo">
+    <h1>Roll Number Slip</h1>
+    <form id="rollNumberForm">
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" placeholder="Enter your name" required>
+      </div>
+      <div class="form-group">
+        <label for="fatherName">Father Name:</label>
+        <input type="text" id="fatherName" name="fatherName" placeholder="Enter your father's name" required>
+      </div>
+      <div class="form-group">
         <label for="rollNumber">Roll Number:</label>
-        <input type="text" id="rollNumber" required><br>
-
-        <label for="classSelect">Class:</label>
-        <select id="classSelect" required>
-            <option value="6">Grade 6</option>
-            <option value="7">Grade 7</option>
-            <option value="8">Grade 8</option>
-        </select><br>
-
-        <label for="profilePicture">Upload Profile Picture:</label>
-        <input type="file" id="profilePicture" accept="image/*" required><br><br>
-
-        <img id="hiddenLogo" src="your-logo-url-here.jpg" style="display:none;" alt="Logo"><br>
-
-        <div class="button-container">
-            <button type="button" class="btn" onclick="generatePDF()">Generate Roll Number Slip</button>
-        </div>
+        <input type="text" id="rollNumber" name="rollNumber" placeholder="Enter your roll number" required>
+      </div>
+      <div class="form-group">
+        <label for="profilePicture">Profile Picture:</label>
+        <input type="file" id="profilePicture" name="profilePicture" accept="image/*" required>
+      </div>
+      <div class="form-actions">
+        <button type="button" onclick="generatePDF()">Download PDF</button>
+      </div>
     </form>
+  </div>
 
-    <h2>Generated Students' Roll Number Slips</h2>
-    <table class="data-table" id="generatedData">
-        <thead>
-            <tr>
-                <th>Student Name</th>
-                <th>Father's Name</th>
-            </tr>
-        </thead>
-        <tbody id="dataBody">
-            <!-- Temporary student data will appear here -->
-        </tbody>
-    </table>
+  <!-- External libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.21/jspdf.plugin.autotable.min.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="script.js"></script>
+  <!-- Updated Script -->
+  <script>
+    async function generatePDF() {
+      const { jsPDF } = window.jspdf;
 
+      const name = document.getElementById("name").value;
+      const fatherName = document.getElementById("fatherName").value;
+      const rollNumber = document.getElementById("rollNumber").value;
+      const profilePicture = document.getElementById("profilePicture").files[0];
+      const hiddenLogo = document.getElementById("hiddenLogo");
+
+      if (!name || !fatherName || !rollNumber || !profilePicture) {
+        alert("Please fill out all fields and upload a profile picture.");
+        return;
+      }
+
+      const profileReader = new FileReader();
+      profileReader.onload = function (profileEvent) {
+        const profilePicURL = profileEvent.target.result;
+        const logoURL = hiddenLogo.src;
+
+        const pdf = new jsPDF("p", "mm", "a4");
+        const yOffset = 20;
+
+        // Add the logo at the top-left corner
+        pdf.addImage(logoURL, "JPEG", 10, yOffset + 5, 20, 20);
+
+        // Add header text
+        pdf.setFontSize(12);
+        pdf.setFont("helvetica", "bold");
+        pdf.text("GOVERNMENT HIGHER SECONDARY SCHOOL MIRPUR SAKRO", 105, yOffset + 12, { align: "center" });
+        pdf.text("MID-TERM EXAMINATION 2024-25", 105, yOffset + 18, { align: "center" });
+        pdf.text("ROLL NUMBER SLIP", 105, yOffset + 24, { align: "center" });
+        pdf.line(70, yOffset + 25, 140, yOffset + 25);
+
+        // Add student details
+        let y = yOffset + 40;
+        pdf.setFontSize(10);
+        pdf.text(`NAME: ${name}`, 15, y);
+        pdf.addImage(profilePicURL, "JPEG", 170, y - 10, 25, 33);
+        y += 6;
+        pdf.text(`FATHER NAME: ${fatherName}`, 15, y);
+        y += 6;
+        pdf.text(`CLASS: VII`, 15, y);
+        y += 6;
+        pdf.text(`Roll Number: ${rollNumber}`, 15, y);
+        y += 6;
+        pdf.text(`INSTITUTE: GOVERNMENT SECONDARY SCHOOL MIRPUR SAKRO`, 15, y);
+        y += 6;
+        pdf.text(`CENTER: GOVERNMENT SECONDARY SCHOOL MIRPUR SAKRO`, 15, y);
+        y += 10;
+
+        // Add exam schedule table
+        pdf.autoTable({
+  head: [['Date', 'Day', 'Subject', 'Morning Timing', 'Afternoon Timing']],
+  body: [
+    ['16-12-2024', 'Monday', 'English', '09:00 AM - 11:30 AM', ''],
+    ['17-12-2024', 'Tuesday', 'Science/Arabic', '09:00 AM - 11:30 AM', '12:00 PM - 02:00 PM'],
+    ['18-12-2024', 'Wednesday', 'Sindhi', '09:00 AM - 11:30 AM', ''],
+    ['19-12-2024', 'Thursday', 'SS/Drawing', '09:00 AM - 11:30 AM', '12:00 PM - 02:00 PM'],
+    ['20-12-2024', 'Friday', 'Islamiyat', '09:00 AM - 11:30 AM', ''],
+    ['21-12-2024', 'Saturday', 'Mathematics', '09:00 AM - 11:30 AM', ''],
+  ],
+  startY: y,
+  theme: 'grid',
+  headStyles: {
+    fillColor: [169, 169, 169], 
+    fontSize: 12, 
+    halign: 'center', 
+    textColor: [0, 0, 0], 
+    fontStyle: 'bold', // Bold header text
+  },
+  bodyStyles: {
+    fontSize: 12, 
+    halign: 'center', 
+    fontStyle: 'bold', // Bold body text
+  },
+  columnStyles: { 
+    0: { cellWidth: 25 }, 
+    1: { cellWidth: 30 }, 
+    2: { cellWidth: 35 }, 
+    3: { cellWidth: 45 }, 
+    4: { cellWidth: 45 } 
+  },
+});
+
+        // Add signature lines
+        let ySignature = pdf.autoTable.previous.finalY + 20;
+        pdf.line(15, ySignature, 50, ySignature); // Candidate signature line
+        pdf.text("Candidate Signature:", 15, ySignature + 8);
+
+        let centerText = "Center Incharge Signature:";
+        let centerTextWidth = pdf.getTextWidth(centerText);
+        let endX = 195 - centerTextWidth;
+        pdf.line(endX, ySignature, 195, ySignature); // Center incharge line
+        pdf.text(centerText, endX, ySignature + 8);
+
+        // Add instructions below signature
+        let instructionsY = ySignature + 20;
+        pdf.text("INSTRUCTIONS:", 15, instructionsY);
+        instructionsY += 6;
+        pdf.text("i) Bring this slip in the exam hall.", 15, instructionsY);
+        instructionsY += 6;
+        pdf.text("ii) Do not bring unauthorized material (e.g. written notes, etc.).", 15, instructionsY);
+        instructionsY += 6;
+        pdf.text("iii) Kindly bring all writing material (pen, pencil, eraser, etc.).", 15, instructionsY);
+        instructionsY += 6;
+        pdf.text("iv) Giving and taking of anything during paper is strictly prohibited.", 15, instructionsY);
+
+        pdf.save(`${name}_RollNumberSlip.pdf`);
+      };
+
+      profileReader.readAsDataURL(profilePicture);
+    }
+  </script>
 </body>
 </html>
