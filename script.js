@@ -1,50 +1,19 @@
-function getSeatNumbers() {
-  return JSON.parse(localStorage.getItem("seatNumbers")) || { "6": 101, "7": 0, "8": 0 };
-}
-
-function saveSeatNumbers(seatNumbers) {
-  localStorage.setItem("seatNumbers", JSON.stringify(seatNumbers));
-}
-
 function assignRollNumber() {
   const selectedClass = document.getElementById("classSelection").value;
   if (!selectedClass) return;
 
-  let seatNumbers = getSeatNumbers();
+  let seatNumbers = JSON.parse(localStorage.getItem("seatNumbers")) || { "6": 101, "7": 0, "8": 0 };
 
   if (seatNumbers["7"] === 0) seatNumbers["7"] = seatNumbers["6"] + 1;
   if (seatNumbers["8"] === 0) seatNumbers["8"] = seatNumbers["7"] + 1;
 
-  const rollNumber = seatNumbers[selectedClass];
-  document.getElementById("rollNumber").value = rollNumber;
+  document.getElementById("rollNumber").value = seatNumbers[selectedClass];
 
   seatNumbers[selectedClass]++;
-  saveSeatNumbers(seatNumbers);
+  localStorage.setItem("seatNumbers", JSON.stringify(seatNumbers));
 }
 
-function saveStudentData() {
-  const name = document.getElementById("name").value;
-  const fatherName = document.getElementById("fatherName").value;
-  const classSelection = document.getElementById("classSelection").value;
-  const rollNumber = document.getElementById("rollNumber").value;
-  const profilePicture = document.getElementById("profilePicture").files[0];
-
-  if (!name || !fatherName || !classSelection || !rollNumber || !profilePicture) {
-    alert("Please fill all fields and upload a profile picture.");
-    return;
-  }
-
-  const reader = new FileReader();
-  reader.onload = function(event) {
-    const profilePicURL = event.target.result;
-    const studentData = { name, fatherName, classSelection, rollNumber, profilePicURL };
-    localStorage.setItem(`student_${rollNumber}`, JSON.stringify(studentData));
-    alert("Student data saved successfully!");
-  };
-  reader.readAsDataURL(profilePicture);
-}
-
-async function generatePDF() {
+function generatePDF() {
   const { jsPDF } = window.jspdf;
   const name = document.getElementById("name").value;
   const fatherName = document.getElementById("fatherName").value;
@@ -86,4 +55,4 @@ async function generatePDF() {
     pdf.save(`${name}_RollNumberSlip.pdf`);
   };
   reader.readAsDataURL(profilePicture);
-}
+             }
