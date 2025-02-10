@@ -4,6 +4,7 @@ let generatedStudents = [];
 async function generatePDF() {
     const { jsPDF } = window.jspdf;
 
+    // Get form values
     const name = document.getElementById("name").value.toUpperCase();
     const fatherName = document.getElementById("fatherName").value.toUpperCase();
     const rollNumber = document.getElementById("rollNumber").value;
@@ -11,16 +12,19 @@ async function generatePDF() {
     const profilePicture = document.getElementById("profilePicture").files[0];
     const hiddenLogo = document.getElementById("hiddenLogo");
 
+    // Validate form inputs
     if (!name || !fatherName || !rollNumber || !profilePicture) {
         alert("Please fill out all fields and upload a profile picture.");
         return;
     }
 
+    // Read the profile picture as a data URL
     const profileReader = new FileReader();
     profileReader.onload = function (profileEvent) {
         const profilePicURL = profileEvent.target.result;
         const logoURL = hiddenLogo.src;
 
+        // Create a new PDF document
         const pdf = new jsPDF("p", "mm", "a4");
 
         // Set the line width to 0.5px for thinner borders
@@ -37,24 +41,21 @@ async function generatePDF() {
         pdf.text("GOVERNMENT HIGHER SECONDARY SCHOOL MIRPUR SAKRO", 105, 15, { align: "center" });
         pdf.text("ANNUAL EXAMINATION 2024-2025", 105, 22, { align: "center" });
 
-        // Set the color for the line (black)
-        pdf.setDrawColor(0, 0, 0);
-
         // Draw a bottom line for the header
+        pdf.setDrawColor(0, 0, 0); // Set line color to black
         pdf.line(50, 38, 160, 38); // Line from x=50 to x=160 at y=38
 
-        // Set text color to black for the header text
-        pdf.setTextColor(0, 0, 0);
-        pdf.setFontSize(14);  // Set font size for the text
+        // Add "ROLL NUMBER SLIP" heading
+        pdf.setTextColor(0, 0, 0); // Set text color to black
+        pdf.setFontSize(14); // Set font size for the heading
         pdf.text("ROLL NUMBER SLIP", 105, 35, { align: "center" });
 
-        let y = 50;  // Move to the next y position for further content
-        pdf.setFontSize(10);  // Set font size for student details or further content
-
-        // Student details (Brown & Black text)
+        // Add student details
+        let y = 50; // Starting Y position for student details
+        pdf.setFontSize(10); // Set font size for student details
         pdf.setTextColor(139, 69, 19); // Brown color for labels
         pdf.text(`NAME: ${name}`, 15, y);
-        pdf.addImage(profilePicURL, "JPEG", 170, y - 10, 25, 33);
+        pdf.addImage(profilePicURL, "JPEG", 170, y - 10, 25, 33); // Add profile picture
         y += 6;
         pdf.text(`FATHER NAME: ${fatherName}`, 15, y);
         y += 6;
@@ -67,9 +68,10 @@ async function generatePDF() {
         pdf.text(`CENTER: GOVERNMENT HIGHER SECONDARY SCHOOL`, 15, y);
         y += 10;
 
-        pdf.setTextColor(0, 0, 0); // Reset text color to black
+        // Reset text color to black
+        pdf.setTextColor(0, 0, 0);
 
-        // Exam Schedule Table
+        // Add exam schedule table
         pdf.autoTable({
             head: [['Date', 'Day', 'Subject', 'Morning Timing', 'Afternoon Timing']],
             body: [
@@ -94,14 +96,16 @@ async function generatePDF() {
         displayGeneratedStudents();
     };
 
+    // Read the profile picture file
     profileReader.readAsDataURL(profilePicture);
 }
 
 // Function to display generated students in the table
 function displayGeneratedStudents() {
     const dataBody = document.getElementById("dataBody");
-    dataBody.innerHTML = "";  // Clear existing data
+    dataBody.innerHTML = ""; // Clear existing data
 
+    // Add each student's data to the table
     generatedStudents.forEach(student => {
         const row = document.createElement("tr");
 
