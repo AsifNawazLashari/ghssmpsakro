@@ -110,9 +110,7 @@
         const pdf = new jsPDF("p", "mm", "a4");
         const yOffset = 20;
 
-
-
-
+        // Add black border
         pdf.setDrawColor(0, 0, 0); // Black color for the border
         pdf.setLineWidth(0.5);
         pdf.rect(5, 5, 200, 287); // Position and size of the border
@@ -120,77 +118,31 @@
         // Add the logo at the top-left corner
         pdf.addImage(logoURL, "JPEG", 10, yOffset + 5, 20, 20);
 
-        // Set font properties
-pdf.setFontSize(12);
-pdf.setFont("helvetica", "bold");
+        // Add header text
+        pdf.setFontSize(12);
+        pdf.setFont("helvetica", "bold");
+        pdf.text("GOVERNMENT HIGHER SECONDARY SCHOOL MIRPUR SAKRO", 105, yOffset + 12, { align: "center" });
+        pdf.text("MID-TERM EXAMINATION 2024-25", 105, yOffset + 18, { align: "center" });
+        pdf.text("ROLL NUMBER SLIP", 105, yOffset + 24, { align: "center" });
+        pdf.line(70, yOffset + 25, 140, yOffset + 25);
 
-// First line (Dark Brown)
-pdf.setTextColor(139, 69, 19); // Brown color
-pdf.text("GOVERNMENT HIGHER SECONDARY SCHOOL MIRPUR SAKRO", 105, yOffset + 12, { align: "center" });
+        // Add student details
+        let y = yOffset + 40;
+        pdf.setFontSize(10);
+        pdf.text(`NAME: ${name}`, 15, y);
+        pdf.addImage(profilePicURL, "JPEG", 170, y - 10, 25, 33);
+        y += 6;
+        pdf.text(`FATHER NAME: ${fatherName}`, 15, y);
+        y += 6;
+        pdf.text(`CLASS: VII`, 15, y);
+        y += 6;
+        pdf.text(`Roll Number: ${rollNumber}`, 15, y);
+        y += 6;
+        pdf.text(`INSTITUTE: GOVERNMENT SECONDARY SCHOOL MIRPUR SAKRO`, 15, y);
+        y += 6;
+        pdf.text(`CENTER: GOVERNMENT SECONDARY SCHOOL MIRPUR SAKRO`, 15, y);
+        y += 10;
 
-// Second line (Deep Gray - matching brown tone)
-pdf.setTextColor(90, 60, 40); // Dark grayish brown
-pdf.text("ANNUAL EXAMINATION 2024-25", 105, yOffset + 18, { align: "center" });
-
-// Third line (Black for balance)
-pdf.setTextColor(0, 0, 0); // Black
-pdf.text("ROLL NUMBER SLIP", 105, yOffset + 24, { align: "center" });
-
-// Draw line under heading
-pdf.setDrawColor(0, 0, 0);
-pdf.line(70, yOffset + 25, 140, yOffset + 25);;
-
-        // Ensure trimmed inputs
-name = name.trim();
-fatherName = fatherName.trim();
-rollNumber = rollNumber.trim();
-
-// Add student details without extra spaces
-let y = yOffset + 40;
-pdf.setFontSize(10);
-
-// NAME
-pdf.setTextColor(139, 69, 19); // Dark Brown
-pdf.text("NAME:", 15, y);
-pdf.setTextColor(0, 0, 0); // Black
-pdf.text(name, 50, y);  // Adjusted position to remove extra space
-pdf.addImage(profilePicURL, "JPEG", 170, y - 10, 25, 33);
-y += 6;
-
-// FATHER NAME
-pdf.setTextColor(139, 69, 19);
-pdf.text("FATHER NAME:", 15, y);
-pdf.setTextColor(0, 0, 0);
-pdf.text(fatherName, 65, y); // Adjusted position
-y += 6;
-
-// CLASS
-pdf.setTextColor(139, 69, 19);
-pdf.text("CLASS:", 15, y);
-pdf.setTextColor(0, 0, 0);
-pdf.text("VII", 50, y);
-y += 6;
-
-// ROLL NUMBER
-pdf.setTextColor(139, 69, 19);
-pdf.text("ROLL NUMBER:", 15, y);
-pdf.setTextColor(0, 0, 0);
-pdf.text(rollNumber, 70, y); // Adjusted position
-y += 6;
-
-// INSTITUTE
-pdf.setTextColor(139, 69, 19);
-pdf.text("INSTITUTE:", 15, y);
-pdf.setTextColor(0, 0, 0);
-pdf.text("GOVERNMENT SECONDARY SCHOOL MIRPUR SAKRO", 60, y); // Properly aligned
-y += 6;
-
-// CENTER
-pdf.setTextColor(139, 69, 19);
-pdf.text("CENTER:", 15, y);
-pdf.setTextColor(0, 0, 0);
-pdf.text("GOVERNMENT SECONDARY SCHOOL MIRPUR SAKRO", 55, y); // Properly aligned
-y += 10;
         // Add exam schedule table
         pdf.autoTable({
   head: [['Date', 'Day', 'Subject', 'Morning Timing', 'Afternoon Timing']],
@@ -255,4 +207,4 @@ y += 10;
     }
   </script>
 </body>
-</html>
+  </html>
