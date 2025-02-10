@@ -104,16 +104,20 @@ function displayGeneratedStudents() {
 
     generatedStudents.forEach(student => {
         const row = document.createElement("tr");
-        const nameCell = document.create
+
+        // Create table cells for name and father name
         const nameCell = document.createElement("td");
         const fatherNameCell = document.createElement("td");
 
+        // Add student data to the cells
         nameCell.textContent = student.name;
         fatherNameCell.textContent = student.fatherName;
 
+        // Append cells to the row
         row.appendChild(nameCell);
         row.appendChild(fatherNameCell);
 
+        // Append the row to the table body
         dataBody.appendChild(row);
     });
 }
