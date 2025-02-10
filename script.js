@@ -31,25 +31,26 @@ function generatePDF() {
     const profilePicURL = event.target.result;
     const pdf = new jsPDF();
 
-    // Add colored header
+    // ✅ Colored Header
     pdf.setFillColor(0, 102, 204); // Dark Blue
-    pdf.rect(0, 0, 210, 25, "F");
+    pdf.rect(0, 0, 210, 25, "F"); // Header background
     pdf.setTextColor(255, 255, 255);
     pdf.setFontSize(16);
     pdf.text("ROLL NUMBER SLIP", 105, 15, { align: "center" });
 
-    // Add student details with border
+    // ✅ Border for Student Details
+    pdf.setDrawColor(0, 0, 0);
+    pdf.rect(10, 30, 190, 50); // Black border
+
     pdf.setTextColor(0, 0, 0);
     pdf.setFontSize(12);
-    pdf.rect(10, 30, 190, 50); // Border for details
-
     pdf.text(`Name: ${name}`, 20, 40);
     pdf.text(`Father Name: ${fatherName}`, 20, 50);
     pdf.text(`Class: ${classSelection}`, 20, 60);
     pdf.text(`Roll Number: ${rollNumber}`, 20, 70);
     pdf.addImage(profilePicURL, "JPEG", 150, 35, 40, 40); // Profile Picture
 
-    // Add exam schedule table
+    // ✅ Table with Colored Header
     pdf.autoTable({
       startY: 85,
       head: [['Date', 'Day', 'Subject', 'Morning Timing', 'Afternoon Timing']],
@@ -64,13 +65,16 @@ function generatePDF() {
       theme: 'grid',
       headStyles: {
         fillColor: [0, 102, 204], // Blue header
-        fontSize: 12,
         textColor: [255, 255, 255],
+        fontSize: 12,
         fontStyle: 'bold',
       },
       bodyStyles: {
         fontSize: 11,
         fontStyle: 'bold',
+      },
+      alternateRowStyles: {
+        fillColor: [230, 230, 230], // Light gray rows
       },
       columnStyles: {
         0: { cellWidth: 25 },
@@ -81,24 +85,24 @@ function generatePDF() {
       }
     });
 
-    // Add signature section with border
+    // ✅ Signature Section with Border
     let ySignature = pdf.autoTable.previous.finalY + 15;
     pdf.setDrawColor(0, 0, 0);
-    pdf.rect(10, ySignature, 190, 25);
-    
-    pdf.text("Candidate Signature:", 20, ySignature + 10);
-    pdf.line(50, ySignature + 12, 110, ySignature + 12); // Candidate signature line
-    
-    pdf.text("Center Incharge Signature:", 120, ySignature + 10);
-    pdf.line(160, ySignature + 12, 190, ySignature + 12); // Center Incharge line
+    pdf.rect(10, ySignature, 190, 25); // Border
 
-    // Add instructions with background
+    pdf.text("Candidate Signature:", 20, ySignature + 10);
+    pdf.line(50, ySignature + 12, 110, ySignature + 12); // Line
+
+    pdf.text("Center Incharge Signature:", 120, ySignature + 10);
+    pdf.line(160, ySignature + 12, 190, ySignature + 12); // Line
+
+    // ✅ Instructions with Gray Background
     let instructionsY = ySignature + 35;
-    pdf.setFillColor(240, 240, 240); // Light gray background
+    pdf.setFillColor(240, 240, 240); // Light gray
     pdf.rect(10, instructionsY, 190, 40, "F");
 
-    pdf.setFontSize(11);
     pdf.setTextColor(0, 0, 0);
+    pdf.setFontSize(11);
     pdf.text("INSTRUCTIONS:", 15, instructionsY + 6);
     pdf.text("1. Bring this slip to the exam hall.", 15, instructionsY + 14);
     pdf.text("2. Do not bring unauthorized materials.", 15, instructionsY + 22);
