@@ -22,7 +22,7 @@ async function generatePDF() {
     pdf.rect(5, 5, 200, 287);
 
     // Add institution name and title
-    pdf.setFontSize(14);
+    pdf.setFontSize(16);
     pdf.setFont("helvetica", "bold");
     pdf.text("GOVERNMENT HIGHER SECONDARY SCHOOL", 105, 20, { align: "center" });
     pdf.text("ANNUAL EXAMINATION 2024-2025", 105, 28, { align: "center" });
@@ -31,16 +31,18 @@ async function generatePDF() {
     let y = 50;
 
     // Student Details Section
-    pdf.setFillColor(139, 69, 19);
-    pdf.rect(10, y, 60, 8, "F");
+    pdf.setFillColor(139, 69, 19); // Brown color for the header
+    pdf.rect(10, y, 190, 8, "F"); // Brown rectangle background
     pdf.setTextColor(255, 255, 255);
-    pdf.text("STUDENT DETAILS", 12, y + 6);
-    pdf.setTextColor(0, 0, 0);
+    pdf.setFontSize(14);
+    pdf.text("STUDENT DETAILS", 12, y + 6); // Title in white text
+    pdf.setTextColor(0, 0, 0); // Reset to black for body text
 
     y += 12;
     pdf.setFontSize(12);
+    pdf.setFont("helvetica", "normal");
     pdf.text(`NAME: ${name}`, 15, y);
-    pdf.addImage(profilePicURL, "JPEG", 160, y - 10, 25, 30);
+    pdf.addImage(profilePicURL, "JPEG", 160, y - 10, 25, 30); // Profile picture
     y += 6;
     pdf.text(`FATHER'S NAME: ${fatherName}`, 15, y);
     y += 6;
@@ -48,11 +50,12 @@ async function generatePDF() {
     y += 6;
     pdf.text(`ROLL NUMBER: ${100 + parseInt(studentClass) * 100}`, 15, y);
 
-    // Time Table Header
+    // Time Table Header Section
     y += 15;
-    pdf.setFillColor(135, 206, 250);
+    pdf.setFillColor(135, 206, 250); // Sky blue for the table header
     pdf.rect(10, y, 190, 8, "F");
     pdf.setTextColor(0, 0, 0);
+    pdf.setFontSize(12);
     pdf.text("DATE   DAY   SUBJECT   MORNING TIMING   AFTERNOON TIMING", 12, y + 6);
 
     y += 10;
@@ -65,15 +68,25 @@ async function generatePDF() {
         ["18-12-2024", "Wednesday", "Sindhi", "09:00 AM - 11:30 AM", ""],
       ],
       theme: "grid",
-      headStyles: { fillColor: [135, 206, 250], textColor: [0, 0, 0] },
+      headStyles: { fillColor: [135, 206, 250], textColor: [0, 0, 0], fontSize: 12 },
       bodyStyles: { fontSize: 12 },
+      columnStyles: {
+        0: { cellWidth: 40 },
+        1: { cellWidth: 30 },
+        2: { cellWidth: 50 },
+        3: { cellWidth: 40 },
+        4: { cellWidth: 50 }
+      },
     });
 
     // Instructions Section
     let ySignature = pdf.autoTable.previous.finalY + 20;
+    pdf.setFontSize(12);
     pdf.text("INSTRUCTIONS:", 15, ySignature);
     pdf.text("i) Bring this slip in the exam hall.", 15, ySignature + 6);
     pdf.text("ii) No unauthorized material allowed.", 15, ySignature + 12);
+    pdf.text("iii) Kindly bring all writing materials (pen, pencil, eraser, etc.).", 15, ySignature + 18);
+    pdf.text("iv) Giving and taking of anything during the paper is strictly prohibited.", 15, ySignature + 24);
 
     // Save the PDF
     pdf.save(`${name}_RollNumberSlip.pdf`);
