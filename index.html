@@ -4,38 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Roll Number Slip Generator</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles.css"> <!-- Optional if you want to include custom styles -->
 </head>
 <body>
-    <div class="container">
-        <h1>Roll Number Slip Generator</h1>
-        <form id="rollSlipForm">
-            <label for="name">Student Name:</label>
-            <input type="text" id="name" name="name" required>
-            
-            <label for="fatherName">Father's Name:</label>
-            <input type="text" id="fatherName" name="fatherName" required>
-            
-            <label for="rollNumber">Roll Number:</label>
-            <input type="text" id="rollNumber" name="rollNumber" required>
-            
-            <label for="classSelect">Class:</label>
-            <select id="classSelect" name="classSelect">
-                <option value="6">Class 6</option>
-                <option value="7">Class 7</option>
-                <option value="8">Class 8</option>
-            </select>
-            
-            <label for="profilePicture">Profile Picture:</label>
-            <input type="file" id="profilePicture" name="profilePicture" accept="image/*" required>
-            
-            <label for="hiddenLogo" style="display:none;">Logo</label>
-            <img id="hiddenLogo" src="school_logo.png" alt="Logo" style="display:none;">
-            
-            <button type="button" onclick="generatePDF()">Generate Roll Slip</button>
-        </form>
-    </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="script.js"></script>
-</body>
+
+    <h1>Generate Roll Number Slip</h1>
+
+    <form id="rollNumberSlipForm">
+        <label for="name">Student Name:</label>
+        <input type="text" id="name" required><br>
+
+        <label for="fatherName">Father's Name:</label>
+        <input type="text" id="fatherName" required><br>
+
+        <label for="rollNumber">Roll Number:</label>
+        <input type="text" id="rollNumber" required><br>
+
+        <label for="classSelect">Class:</label>
+        <select id="classSelect" required>
+            <option value="6">Grade 6</option>
+            <option value="7">Grade 7</option>
+            <option value="8">Grade 8</option>
+        </select><br>
+
+        <label for="profilePicture">Upload Profile Picture:</label>
+        <input type="file" id="profilePicture" accept="image/*" required><br><br>
+
+        <img id="hiddenLogo" src="your-logo-url-here.jpg" style="display:none;" alt="Logo"><br>
+
+        <div class="button-container">
+            <button type="button" class="btn" onclick="generatePDF()">Generate Roll Number Slip</button>
+        </div>
+    </form>
+
+    <script src="script.js"></script> <!-- Link to your JavaScript file -->
+</body
 </html>
