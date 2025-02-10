@@ -15,10 +15,13 @@ async function generatePDF() {
     const profilePicURL = profileEvent.target.result;
 
     const pdf = new jsPDF("p", "mm", "a4");
+
+    // Add blue page border with padding
     pdf.setDrawColor(0, 0, 255);
     pdf.setLineWidth(3);
     pdf.rect(5, 5, 200, 287);
 
+    // Add institution name and title
     pdf.setFontSize(14);
     pdf.setFont("helvetica", "bold");
     pdf.text("GOVERNMENT HIGHER SECONDARY SCHOOL", 105, 20, { align: "center" });
@@ -26,6 +29,8 @@ async function generatePDF() {
     pdf.text("ROLL NUMBER SLIP", 105, 36, { align: "center" });
 
     let y = 50;
+
+    // Student Details Section
     pdf.setFillColor(139, 69, 19);
     pdf.rect(10, y, 60, 8, "F");
     pdf.setTextColor(255, 255, 255);
@@ -43,6 +48,7 @@ async function generatePDF() {
     y += 6;
     pdf.text(`ROLL NUMBER: ${100 + parseInt(studentClass) * 100}`, 15, y);
 
+    // Time Table Header
     y += 15;
     pdf.setFillColor(135, 206, 250);
     pdf.rect(10, y, 190, 8, "F");
@@ -63,12 +69,15 @@ async function generatePDF() {
       bodyStyles: { fontSize: 12 },
     });
 
+    // Instructions Section
     let ySignature = pdf.autoTable.previous.finalY + 20;
     pdf.text("INSTRUCTIONS:", 15, ySignature);
     pdf.text("i) Bring this slip in the exam hall.", 15, ySignature + 6);
     pdf.text("ii) No unauthorized material allowed.", 15, ySignature + 12);
 
+    // Save the PDF
     pdf.save(`${name}_RollNumberSlip.pdf`);
   };
+
   profileReader.readAsDataURL(profilePicture);
 }
