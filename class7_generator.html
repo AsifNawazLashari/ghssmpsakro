@@ -156,10 +156,10 @@ pdf.line(60, yOffset + 26, 150, yOffset + 26);
      // Add Profile Picture Frame
 pdf.setDrawColor(250, 210, 71); // Set frame color to #FAD247
 pdf.setLineWidth(1.5); // Adjust border thickness
-pdf.rect(rightAlignX - 20, y - 5, 25, 33); // Exact position of profile picture
+pdf.rect(rightAlignX - 20, y - 3, 25, 33); // Exact position of profile picture
       
 // Add Profile Picture (Aligned with Rightmost Edge)
-pdf.addImage(profilePicURL, "JPEG", rightAlignX - 20, y - 5, 25, 33);
+pdf.addImage(profilePicURL, "JPEG", rightAlignX - 20, y - 3, 25, 33);
       y += 6;
 pdf.setTextColor(139, 69, 19);
 pdf.text("FATHER NAME:", 15, y);
