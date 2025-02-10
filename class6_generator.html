@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roll Number Slip Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+    .container h1 {
+      text-align: center;
+      color: #003366; /* Dark Blue */
+      margin-bottom: 15px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 8px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+    .form-actions {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .form-actions button {
+      padding: 10px 20px;
+      font-size: 16px;
+      color: #fff;
+      background-color: #28a745; /* Green */
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .form-actions button:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>ROLL NUMBER SLIP GENERATOR</h1>
+    
+    <img id="hiddenLogo" src="logo.jpg" style="display: none; width: 25mm; height: 25mm;" alt="Logo">
+
+    <form id="rollNumberForm">
+      <div class="form-group">
+        <label for="name">NAME:</label>
+        <input type="text" id="name" name="name" placeholder="Enter student's name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="fatherName">FATHER'S NAME:</label>
+        <input type="text" id="fatherName" name="fatherName" placeholder="Enter father's name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="rollNumber">ROLL NUMBER:</label>
+        <input type="text" id="rollNumber" name="rollNumber" placeholder="Enter roll number" required>
+      </div>
+
+      <div class="form-group">
+        <label for="profilePicture">PROFILE PICTURE:</label>
+        <input type="file" id="profilePicture" name="profilePicture" accept="image/*" required>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" onclick="generatePDF()">DOWNLOAD PDF</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- External Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.21/jspdf.plugin.autotable.min.js"></script>
+
+  <!-- PDF Generation Script -->
+ <script>
+  async function generatePDF() {
+    const { jsPDF } = window.jspdf;
+
+    const name = document.getElementById("name").value.toUpperCase();
+    const fatherName = document.getElementById("fatherName").value.toUpperCase();
+    const rollNumber = document.getElementById("rollNumber").value.toUpperCase();
+    const profilePicture = document.getElementById("profilePicture").files[0];
+    const hiddenLogo = document.getElementById("hiddenLogo");
+
+    if (!name || !fatherName || !rollNumber || !profilePicture) {
+      alert("PLEASE FILL OUT ALL FIELDS AND UPLOAD A PROFILE PICTURE.");
+      return;
+    }
+
+    const profileReader = new FileReader();
+    profileReader.onload = function (profileEvent) {
+      const profilePicURL = profileEvent.target.result;
+      const logoURL = hiddenLogo.src;
+
+      const pdf = new jsPDF("p", "mm", "letter");
+      const pageWidth = pdf.internal.pageSize.width;
+      let yOffset = 15;
+
+      // Sky blue border (closer to the edge with 1mm margin)
+     pdf.setDrawColor(180, 230, 180); // Professional soft green
+      pdf.rect(5, 5, pageWidth - 10, 287);
+
+      
+// Beautiful Heading
+pdf.setFontSize(16);
+pdf.setTextColor(43, 191, 110); // Correct RGB
+pdf.setFont("helvetica", "bold");
+pdf.text("GOVERNMENT HIGHER SECONDARY SCHOOL MIRPUR SAKRO", pageWidth / 2, yOffset + 8, { align: "center" });
+
+pdf.setTextColor(142, 54, 0); // Correct RGB for #8E3600
+pdf.setFontSize(12);
+pdf.text("ANNUAL EXAMINATION 2024-25", pageWidth / 2, yOffset + 16, { align: "center" });
+
+pdf.setTextColor(0, 0, 139);
+pdf.setFontSize(14);
+pdf.text("ROLL NUMBER SLIP", pageWidth / 2, yOffset + 24, { align: "center" });
+
+pdf.setDrawColor(0);
+pdf.line(60, yOffset + 26, 150, yOffset + 26);
+
+      // Student Information
+      let y = yOffset + 35;
+      pdf.setFontSize(10);
+      pdf.setTextColor(139, 69, 19);
+      pdf.text("NAME:", 15, y);
+      pdf.setTextColor(0, 0, 0);
+      pdf.text(name, 50, y);
+
+      // Determine rightmost alignment point based on center incharge signature
+      let rightAlignX = 190; // Fixed position for alignment
+
+     // Add Profile Picture Frame
+pdf.setDrawColor(250, 210, 71); // Set frame color to #FAD247
+pdf.setLineWidth(1.5); // Adjust border thickness
+pdf.rect(rightAlignX - 20, y - 5, 25, 33); // Exact position of profile picture
+      
+// Add Profile Picture (Aligned with Rightmost Edge)
+pdf.addImage(profilePicURL, "JPEG", rightAlignX - 20, y - 3, 25, 33);
+      y += 6;
+pdf.setTextColor(139, 69, 19);
+pdf.text("FATHER NAME:", 15, y);
+pdf.setTextColor(0, 0, 0);
+pdf.text(fatherName, 50, y); // Adjusted for alignment
+
+y += 6;
+pdf.setTextColor(139, 69, 19);
+pdf.text("CLASS:", 15, y);
+pdf.setTextColor(0, 0, 0);
+pdf.text("VI", 50, y); // Adjusted for alignment
+
+y += 6;
+pdf.setTextColor(139, 69, 19);
+pdf.text("ROLL NUMBER:", 15, y);
+pdf.setTextColor(0, 0, 0);
+pdf.text(rollNumber, 50, y); // Adjusted for alignment
+
+y += 6;
+pdf.setTextColor(139, 69, 19);
+pdf.text("INSTITUTE:", 15, y);
+pdf.setTextColor(0, 0, 0);
+pdf.text("GOVERNMENT HIGHER SECONDARY SCHOOL MIRPUR SAKRO", 50, y); // Adjusted for alignment
+
+y += 6;
+pdf.setTextColor(139, 69, 19);
+pdf.text("CENTER:", 15, y);
+pdf.setTextColor(0, 0, 0);
+pdf.text("GOVERNMENT HIGHER SECONDARY SCHOOL MIRPUR SAKRO", 50, y); // Adjusted for alignment
+      y += 10;
+
+      // Exam Schedule Table (Aligned with Profile Picture)
+      pdf.autoTable({
+        head: [['Date', 'Day', 'Subject', 'Morning Timing']],
+        body: [
+          ['03-03-2025', 'Monday', 'English', '08:30 AM - 11:30 AM'],
+          ['04-03-2025', 'Tuesday', 'Mathematics', '08:30 AM - 11:30 AM'],
+          ['05-03-2025', 'Wednesday', 'General Science', '08:30 AM - 11:30 AM'],
+          ['06-03-2025', 'Thursday', 'Social Studies', '08:30 AM - 11:30 AM'],
+          ['07-03-2025', 'Friday', 'Islamiyat', '08:30 AM - 11:30 AM'],
+          ['08-03-2025', 'Saturday', 'M.T', '08:30 AM - 11:30 AM'],
+          ['10-03-2025', 'Monday', 'N.M.T', '08:30 AM - 11:30 AM'],
+          ['11-03-2025', 'Tuesday', 'Computer', '08:30 AM - 11:30 AM'],
+          ['12-03-2025', 'Wednesday', 'Drawing', '08:30 AM - 11:30 AM'],
+          ['13-03-2025', 'Thursday', 'Arabic', '08:30 AM - 11:30 AM'],
+        ],
+        startY: y,
+        startX: rightAlignX - 100, // Aligning table with profile picture
+        theme: 'grid',
+        headStyles: {
+          fillColor: [190, 225, 174], // Correct RGB for #BEE1AE
+          fontSize: 12,
+          halign: 'center',
+          textColor: [0, 0, 0],
+          fontStyle: 'bold',
+        },
+        bodyStyles: {
+          fontSize: 12,
+          halign: 'center',
+          fontStyle: 'bold',
+        },
+        columnStyles: {
+          0: { cellWidth: 35 },
+          1: { cellWidth: 35 },
+          2: { cellWidth: 55 },
+          3: { cellWidth: 57 },
+        },
+      });
+
+      let ySignature = pdf.autoTable.previous.finalY + 15;
+      pdf.setDrawColor(0);
+      pdf.line(15, ySignature, 55, ySignature);
+      pdf.text("CANDIDATE SIGNATURE:", 15, ySignature + 8);
+
+      let centerText = "CENTER INCHARGE SIGNATURE:";
+      let centerTextWidth = pdf.getTextWidth(centerText);
+      let endX = 195 - centerTextWidth;
+      pdf.line(endX, ySignature, 195, ySignature);
+      pdf.text(centerText, endX, ySignature + 8);
+
+      // Instructions
+      let instructionsY = ySignature + 25;
+      pdf.setFontSize(10);
+      pdf.setTextColor(139, 69, 19);
+      pdf.text("INSTRUCTIONS:", 15, instructionsY);
+      pdf.setTextColor(0, 0, 0);
+
+      const instructions = [
+        "I) BRING THIS SLIP IN THE EXAM HALL.",
+        "II) DO NOT BRING UNAUTHORIZED MATERIAL (E.G. WRITTEN NOTES, ETC.).",
+        "III) KINDLY BRING ALL WRITING MATERIAL (PEN, PENCIL, ERASER, ETC.).",
+        "IV) GIVING AND TAKING OF ANYTHING DURING PAPER IS STRICTLY PROHIBITED.",
+      ];
+
+      instructions.forEach((instruction, index) => {
+        pdf.text(instruction, 15, instructionsY + (index + 1) * 6);
+      });
+
+      pdf.save(`${name}_ROLL_NUMBER_SLIP.pdf`);
+    };
+
+    profileReader.readAsDataURL(profilePicture);
+  }
+</script>
+
+</body>
+</html>
