@@ -19,29 +19,38 @@ async function generatePDF() {
 
         const pdf = new jsPDF("p", "mm", "a4");
         
-        // Add blue border
-        pdf.setDrawColor(0, 0, 255);
-        pdf.rect(5, 5, 200, 287);
+// Set the line width to 5px for a thicker border
+pdf.setLineWidth(5);
+
+// Add blue border
+pdf.setDrawColor(0, 0, 255); // Blue color
+pdf.rect(5, 5, 200, 287); // Position and size of the border
 
         // Add logo and headings
         pdf.addImage(logoURL, "JPEG", 10, 10, 20, 20);
         pdf.setFont("helvetica", "bold");
         pdf.setFontSize(12);
-        pdf.text("GOVERNMENT HIGHER SECONDARY SCHOOL", 105, 15, { align: "center" });
+        pdf.text("GOVERNMENT HIGHER SECONDARY SCHOOL MIRPUR SAKRO", 105, 15, { align: "center" });
         pdf.text("ANNUAL EXAMINATION 2024-2025", 105, 22, { align: "center" });
         
-        // Time-date banner with blue background
-        pdf.setFillColor(0, 0, 255);
-        pdf.rect(50, 28, 110, 10, "F");
-        pdf.setTextColor(255, 255, 255);
-        pdf.text("ROLL NUMBER SLIP", 105, 35, { align: "center" });
-        pdf.setTextColor(0, 0, 0);
+        // Set the color for the line (blue)
+pdf.setDrawColor(0, 0, 255);
+
+// Draw a bottom line instead of filling the rectangle
+pdf.line(50, 38, 160, 38); // Starting at (50, 38) and ending at (160, 38)
+
+// Set text color to white for the header text
+pdf.setTextColor(255, 255, 255);
+pdf.text("ROLL NUMBER SLIP", 105, 35, { align: "center" });
+
+// Reset text color back to black
+pdf.setTextColor(0, 0, 0);
 
         let y = 50;
         pdf.setFontSize(10);
 
         // Student details (Brown & Black text)
-        pdf.setTextColor(139, 69, 19);
+        pdf.setTextColor(0, 0, 0);
         pdf.text(`NAME: ${name}`, 15, y);
         pdf.addImage(profilePicURL, "JPEG", 170, y - 10, 25, 33);
         y += 6;
