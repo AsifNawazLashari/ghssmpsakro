@@ -20,7 +20,7 @@ async function generatePDF() {
         const pdf = new jsPDF("p", "mm", "a4");
         
 // Set the line width to 5px for a thicker border
-pdf.setLineWidth(5);
+pdf.setLineWidth(3);
 
 // Add blue border
 pdf.setDrawColor(0, 0, 255); // Blue color
@@ -33,21 +33,19 @@ pdf.rect(5, 5, 200, 287); // Position and size of the border
         pdf.text("GOVERNMENT HIGHER SECONDARY SCHOOL MIRPUR SAKRO", 105, 15, { align: "center" });
         pdf.text("ANNUAL EXAMINATION 2024-2025", 105, 22, { align: "center" });
         
-        // Set the color for the line (blue)
+// Set the color for the line (blue)
 pdf.setDrawColor(0, 0, 255);
 
-// Draw a bottom line instead of filling the rectangle
-pdf.line(50, 38, 160, 38); // Starting at (50, 38) and ending at (160, 38)
+// Draw a bottom line for the header
+pdf.line(50, 38, 160, 38); // Line from x=50 to x=160 at y=38
 
-// Set text color to white for the header text
-pdf.setTextColor(255, 255, 255);
+// Set text color to black for the header text
+pdf.setTextColor(0, 0, 0);
+pdf.setFontSize(14);  // Set font size for the text
 pdf.text("ROLL NUMBER SLIP", 105, 35, { align: "center" });
 
-// Reset text color back to black
-pdf.setTextColor(0, 0, 0);
-
-        let y = 50;
-        pdf.setFontSize(10);
+let y = 50;  // Move to the next y position for further content
+pdf.setFontSize(10);  // Set font size for student details or further content
 
         // Student details (Brown & Black text)
         pdf.setTextColor(0, 0, 0);
