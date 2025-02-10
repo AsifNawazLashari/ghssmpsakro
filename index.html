@@ -140,7 +140,12 @@ pdf.text("ROLL NUMBER SLIP", 105, yOffset + 24, { align: "center" });
 pdf.setDrawColor(0, 0, 0);
 pdf.line(70, yOffset + 25, 140, yOffset + 25);;
 
-        // Add student details with color formatting
+        // Ensure trimmed inputs
+name = name.trim();
+fatherName = fatherName.trim();
+rollNumber = rollNumber.trim();
+
+// Add student details without extra spaces
 let y = yOffset + 40;
 pdf.setFontSize(10);
 
@@ -148,7 +153,7 @@ pdf.setFontSize(10);
 pdf.setTextColor(139, 69, 19); // Dark Brown
 pdf.text("NAME:", 15, y);
 pdf.setTextColor(0, 0, 0); // Black
-pdf.text(name, 45, y);
+pdf.text(name, 50, y);  // Adjusted position to remove extra space
 pdf.addImage(profilePicURL, "JPEG", 170, y - 10, 25, 33);
 y += 6;
 
@@ -156,35 +161,35 @@ y += 6;
 pdf.setTextColor(139, 69, 19);
 pdf.text("FATHER NAME:", 15, y);
 pdf.setTextColor(0, 0, 0);
-pdf.text(fatherName, 55, y);
+pdf.text(fatherName, 65, y); // Adjusted position
 y += 6;
 
 // CLASS
 pdf.setTextColor(139, 69, 19);
 pdf.text("CLASS:", 15, y);
 pdf.setTextColor(0, 0, 0);
-pdf.text("VII", 40, y);
+pdf.text("VII", 50, y);
 y += 6;
 
 // ROLL NUMBER
 pdf.setTextColor(139, 69, 19);
 pdf.text("ROLL NUMBER:", 15, y);
 pdf.setTextColor(0, 0, 0);
-pdf.text(rollNumber, 60, y);
+pdf.text(rollNumber, 70, y); // Adjusted position
 y += 6;
 
 // INSTITUTE
 pdf.setTextColor(139, 69, 19);
 pdf.text("INSTITUTE:", 15, y);
 pdf.setTextColor(0, 0, 0);
-pdf.text("GOVERNMENT SECONDARY SCHOOL MIRPUR SAKRO", 50, y);
+pdf.text("GOVERNMENT SECONDARY SCHOOL MIRPUR SAKRO", 60, y); // Properly aligned
 y += 6;
 
 // CENTER
 pdf.setTextColor(139, 69, 19);
 pdf.text("CENTER:", 15, y);
 pdf.setTextColor(0, 0, 0);
-pdf.text("GOVERNMENT SECONDARY SCHOOL MIRPUR SAKRO", 45, y);
+pdf.text("GOVERNMENT SECONDARY SCHOOL MIRPUR SAKRO", 55, y); // Properly aligned
 y += 10;
         // Add exam schedule table
         pdf.autoTable({
