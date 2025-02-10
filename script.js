@@ -1,10 +1,10 @@
 // Store the generated students' data temporarily in memory
 let generatedStudents = [];
 
+// Function to generate the PDF and store the student's data
 async function generatePDF() {
     const { jsPDF } = window.jspdf;
 
-    // Get form values
     const name = document.getElementById("name").value.toUpperCase();
     const fatherName = document.getElementById("fatherName").value.toUpperCase();
     const rollNumber = document.getElementById("rollNumber").value;
@@ -12,13 +12,13 @@ async function generatePDF() {
     const profilePicture = document.getElementById("profilePicture").files[0];
     const hiddenLogo = document.getElementById("hiddenLogo");
 
-    // Validate form inputs
+    // Validation: Ensure all fields are filled
     if (!name || !fatherName || !rollNumber || !profilePicture) {
         alert("Please fill out all fields and upload a profile picture.");
         return;
     }
 
-    // Read the profile picture as a data URL
+    // Use FileReader to convert profile picture to base64
     const profileReader = new FileReader();
     profileReader.onload = function (profileEvent) {
         const profilePicURL = profileEvent.target.result;
@@ -27,51 +27,46 @@ async function generatePDF() {
         // Create a new PDF document
         const pdf = new jsPDF("p", "mm", "a4");
 
-        // Set the line width to 0.5px for thinner borders
-        pdf.setLineWidth(0.5);
-
         // Add black border
         pdf.setDrawColor(0, 0, 0); // Black color for the border
+        pdf.setLineWidth(0.5);
         pdf.rect(5, 5, 200, 287); // Position and size of the border
 
-        // Add logo and headings
+        // Add logo and text heading
         pdf.addImage(logoURL, "JPEG", 10, 10, 20, 20);
         pdf.setFont("helvetica", "bold");
         pdf.setFontSize(12);
         pdf.text("GOVERNMENT HIGHER SECONDARY SCHOOL MIRPUR SAKRO", 105, 15, { align: "center" });
         pdf.text("ANNUAL EXAMINATION 2024-2025", 105, 22, { align: "center" });
 
-        // Draw a bottom line for the header
-        pdf.setDrawColor(0, 0, 0); // Set line color to black
-        pdf.line(50, 38, 160, 38); // Line from x=50 to x=160 at y=38
+        // Draw a line under the header
+        pdf.line(50, 38, 160, 38);
 
-        // Add "ROLL NUMBER SLIP" heading
-        pdf.setTextColor(0, 0, 0); // Set text color to black
-        pdf.setFontSize(14); // Set font size for the heading
+        // Set text color to black for the title
+        pdf.setTextColor(0, 0, 0);
+        pdf.setFontSize(14);  // Font size for title
         pdf.text("ROLL NUMBER SLIP", 105, 35, { align: "center" });
 
-        // Add student details
-        let y = 50; // Starting Y position for student details
-        pdf.setFontSize(10); // Set font size for student details
-        pdf.setTextColor(139, 69, 19); // Brown color for labels
+        let y = 50;  // Vertical position for next content
+
+        // Student Details: Name, Father Name, Roll Number, Class
+        pdf.setFontSize(10);
+        pdf.setTextColor(139, 69, 19); // Brown for labels
         pdf.text(`NAME: ${name}`, 15, y);
-        pdf.addImage(profilePicURL, "JPEG", 170, y - 10, 25, 33); // Add profile picture
-        y += 6;
+        pdf.addImage(profilePicURL, "JPEG", 170, y - 10, 25, 33); // Add profile image
+        y += 10;
         pdf.text(`FATHER NAME: ${fatherName}`, 15, y);
         y += 6;
         pdf.text(`ROLL NUMBER: ${rollNumber}`, 15, y);
         y += 6;
-        pdf.text(`CLASS: ${studentClass}`, 15, y); // Added class information
+        pdf.text(`CLASS: ${studentClass}`, 15, y); // Added class info
         y += 6;
         pdf.text(`INSTITUTION: GOVERNMENT HIGHER SECONDARY SCHOOL`, 15, y);
         y += 6;
         pdf.text(`CENTER: GOVERNMENT HIGHER SECONDARY SCHOOL`, 15, y);
         y += 10;
 
-        // Reset text color to black
-        pdf.setTextColor(0, 0, 0);
-
-        // Add exam schedule table
+        // Exam Schedule Table
         pdf.autoTable({
             head: [['Date', 'Day', 'Subject', 'Morning Timing', 'Afternoon Timing']],
             body: [
@@ -88,24 +83,23 @@ async function generatePDF() {
             bodyStyles: { textColor: [0, 0, 0], fontStyle: 'bold' },
         });
 
-        // Save the PDF
+        // Save the generated PDF
         pdf.save(`${name}_RollNumberSlip.pdf`);
 
-        // Store the student data in memory and display it
+        // Store the student data in memory for display later
         generatedStudents.push({ name, fatherName });
-        displayGeneratedStudents();
+        displayGeneratedStudents(); // Update the table with newly added student
     };
 
-    // Read the profile picture file
     profileReader.readAsDataURL(profilePicture);
 }
 
 // Function to display generated students in the table
 function displayGeneratedStudents() {
     const dataBody = document.getElementById("dataBody");
-    dataBody.innerHTML = ""; // Clear existing data
+    dataBody.innerHTML = "";  // Clear any existing rows in the table
 
-    // Add each student's data to the table
+    // Loop through the generated students and create a row for each
     generatedStudents.forEach(student => {
         const row = document.createElement("tr");
 
@@ -115,9 +109,11 @@ function displayGeneratedStudents() {
         nameCell.textContent = student.name;
         fatherNameCell.textContent = student.fatherName;
 
+        // Append the cells to the row
         row.appendChild(nameCell);
         row.appendChild(fatherNameCell);
 
+        // Append the row to the table body
         dataBody.appendChild(row);
     });
 }
